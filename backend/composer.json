@@ -1,0 +1,26 @@
+{
+    "name": "vendor/async-proxy-fetcher",
+    "description": "An asynchronous proxy fetcher for web pages",
+    "type": "project",
+    "license": "proprietary",
+    "authors": [
+        {
+            "name": "Gabriel Koen",
+            "email": "gkoen@pmc.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "guzzlehttp/guzzle": "^7.5",
+        "symfony/yaml": "^5.4",
+        "monolog/monolog": "^2.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "PMC\\Wayback\\": "src/"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
+}
