@@ -1,2 +1,8 @@
 .DS_Store
 .idea
+/backend/composer.lock
+/backend/vendor
+/domains.yml
+/frontend/proxied_pages
+/frontend/package-lock.json
+/frontend/node_modules
