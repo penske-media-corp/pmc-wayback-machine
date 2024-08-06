@@ -1,4 +1,8 @@
 <?php
+/**
+ * @TODO This should probably be moved to a directory like `backend/public`
+ */
+
 require_once __DIR__ . '/../vendor/autoload.php';
 
 use PMC\Wayback\DirectoryReader;

@@ -1,6 +1,6 @@
 # PMC Wayback Machine
 
-PMC Wayback Machine is a PHP application that takes snapshots of web pages from specified domains. It is designed to be triggered by a webhook when code is deployed, capturing snapshots of select pages on websites affected by the deployment.
+This project is a PHP implementation of a web archiving system, similar to the Internet Archive's Wayback Machine. It allows you to create snapshots of websites and retrieve them later.
 
 ## Prerequisites
 
@@ -14,21 +14,15 @@ PMC Wayback Machine is a PHP application that takes snapshots of web pages from 
 git clone https://github.com/penske-media-corp/pmc-wayback-machine.git
 ```
 
-
-2. Navigate to the project's PHP directory:
+2. Install dependencies:
 ```bash
-cd pmc-wayback-machine/backend
-```
-
-
-3. Install dependencies using Composer:
-```bash
+cd pmc-wayback-machine
 composer install
 ```
 
-4. Create the logs and proxied_pages directories in the project root directory and make them writable by PHP:
+3. Create the required directories:
 ```bash
-mkdir logs 
+mkdir logs
 mkdir frontend/public/proxied_pages
 ```
 
@@ -40,25 +34,48 @@ mkdir frontend/public/proxied_pages
 
 ### Creating Snapshots
 
-To create snapshots of websites, you can use the `createsnapshots.php` script. This script accepts a list of domains as a comma-separated string via the `$_POST['domains']` parameter.
+To create snapshots of websites, you can use the `createsnapshots.php` script. This script accepts a list of domains as a comma-separated string via the $_POST['domains'] parameter.
 
 Example usage:
 ```bash
-curl -X POST -d "domains=example.com,example.org" http://your-server.com/path/to/createsnapshots.php
+# Testing all domains and pages defined in domains.yml
+curl -d https://your-server.com/path/to/createsnapshots.php
+
+# Testing pages from two domains (must be defined in domains.yml)
+curl -X POST -d "domains=example.com,example.org" https://your-server.com/path/to/createsnapshots.php
+
+# Triggering a test from a browser using GET parameters
+https://your-server.com/path/to/createsnapshots.php?domains=example.com,example.org
 ```
 
 This will create snapshots for the `example.com` and `example.org` domains.
 If no domains are provided, the script will create snapshots for all domains specified in the `domains.yml` configuration file.
 
+Command line examples:
+```bash
+# Testing all domains from the command line
+php pmc-wayback-machine/backend/src/createsnapshots.php
+
+# Testing specific domains from the command line (must be defined in domains.yml)
+php pmc-wayback-machine/backend/src/createsnapshots.php example.com example.org
+```
+
 ### Getting Snapshots
 To retrieve the snapshots of websites, you can use the `getsnapshots.php` script. This script accepts the following GET parameters:
-- `year` (optional): The year for which to retrieve snapshots.
-- `month` (optional): The month for which to retrieve snapshots.
-- `day` (optional): The day for which to retrieve snapshots.
+
+- `domain`: The domain to filter the snapshots by (optional).
+- `startDate`: The start date to filter the snapshots by (optional, format: YYYY-MM-DD).
+- `endDate`: The end date to filter the snapshots by (optional, format: YYYY-MM-DD).
+
+Unlike `createsnapshots.php`, `getsnapshots.php` is intended to be triggered only from a browser and not the command line. Command line can still be used for testing but request parameters are not supported (it will always fetch all).
 
 Example: 
 ```bash
-curl "http://your-server.com/path/to/getsnapshots.php?year=2023&month=4&day=15"
+# Fetching the default results (3 months, all domains).
+http://your-server.com/path/to/getsnapshots.php
+
+# Fetching using GET parameters to filter the results. This will retrieve the snapshots for the example.com domain between May 1, 2023, and May 31, 2023.
+http://your-server.com/path/to/getsnapshots.php?domain=example.com&startDate=2023-05-01&endDate=2023-05-31
 ```
 
 This will retrieve snapshots for April 15, 2023. If no parameters are provided, the script will retrieve snapshots for the default date set in `DirectoryReader`.

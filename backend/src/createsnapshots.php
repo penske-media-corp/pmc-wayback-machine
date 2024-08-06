@@ -1,5 +1,9 @@
 <?php
 /**
+ * @TODO This should probably be moved to a directory like `backend/public`
+ */
+
+/**
  * Define the lock file path
  */
 $lockFile = __DIR__ . '/createsnapshots.lock';
