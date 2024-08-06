@@ -3,6 +3,7 @@
 /backend/composer.lock
 /backend/vendor
 /domains.yml
-/frontend/proxied_pages
+/frontend/public/proxied_pages
 /frontend/package-lock.json
 /frontend/node_modules
+/logs/app.log
