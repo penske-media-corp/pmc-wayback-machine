@@ -1,0 +1,37 @@
+# domains.yml
+#
+# This YAML file contains a list of domain names and URLs for those domains
+# that we want to take snapshots of using the ReverseProxy class.
+#
+# The file is structured as follows:
+#
+# domain_name:
+#   - url1
+#   - url2
+#   - ...
+#
+# Each domain name is a key, and its value is a list of URLs for that domain.
+
+variety.com:
+  # Homepage
+  - https://variety.com
+  # Article page
+  - https://variety.com/2023/tv/news/stranger-things-season-5-release-date-1235588382/
+  # Category page
+  - https://variety.com/v/film/
+  # Search results page
+  - https://variety.com/search/?q=marvel
+  # Author page
+  - https://variety.com/author/michael-schneider/
+
+footwearnews.com:
+  # Homepage
+  - https://footwearnews.com
+  # Product page
+  - https://footwearnews.com/2023/shop/best-sneakers-for-men-1203435445/
+  # Category page
+  - https://footwearnews.com/category/focus/athletic-outdoor/
+  # Brand page
+  - https://footwearnews.com/brand/nike/
+  # Article page
+  - https://footwearnews.com/2023/business/earnings/nike-q3-earnings-2023-1203437116/
