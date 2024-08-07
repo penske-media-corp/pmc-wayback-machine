@@ -1,0 +1,60 @@
+@use 'styles/_layouts';
+
+@mixin inner-width() {
+  @include layouts.center( $padding: 0 );
+
+  max-width: 1200px;
+  width: calc( 100% - 2rem );
+}
+
+.header {
+  background: #FFFFFF;
+
+  .inner {
+    @include layouts.stack();
+    @include inner-width();
+    padding: 1.25rem 0;
+  }
+}
+
+.main {
+  @include inner-width();
+
+  .inner {
+    @include layouts.stack();
+  }
+}
+
+.breadcrumbs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  @include layouts.cluster();
+
+  button {
+    padding: 0.25rem 1rem;
+    border: none;
+    background: none;
+  }
+}
+
+.list {
+  border: 2px solid black;
+
+  ul {
+    @include layouts.stack();
+
+    list-style: none;
+
+    li button::hover {
+      text-decoration: underline;
+    }
+  }
+
+  button {
+    background: none;
+    border: none;
+
+  }
+}
