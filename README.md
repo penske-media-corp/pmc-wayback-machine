@@ -109,3 +109,6 @@ The application logs all errors and job states (success or failure) using the Mo
 ## License
 
 This project is under proprietary license. 
+
+## Credits
+Bits and pieces plucked from https://github.com/tlinhart/s3-browser

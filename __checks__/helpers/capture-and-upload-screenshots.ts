@@ -22,6 +22,14 @@ export async function captureAndUploadScreenshots ({
   url = null,
 }) {
 
+  // Parse the url right away.
+  const pathParts = getPathPartsByUrl(url);
+  if ( ! pathParts ) {
+    return false;
+  }
+
+  const { hostname, pathname } = pathParts;
+
   // Hide ads.
   const urlObj = new URL( url );
   urlObj.searchParams.set( 'skconfig', 's::true' );
@@ -41,7 +49,8 @@ export async function captureAndUploadScreenshots ({
   await processScreenshot({
     screenshot: desktopScreenshot,
     name: 'desktop',
-    url,
+    hostname,
+    pathname,
   });
 
   await page.setViewportSize({ height: 1200, width: 800 });
@@ -50,7 +59,8 @@ export async function captureAndUploadScreenshots ({
   processScreenshot({
     screenshot: tabletScreenshot,
     name: 'tablet',
-    url,
+    hostname,
+    pathname,
   });
 
   await page.setViewportSize({ height: 1200, width: 400 });
@@ -59,7 +69,19 @@ export async function captureAndUploadScreenshots ({
   processScreenshot({
     screenshot: mobileScreenshot,
     name: 'mobile',
-    url,
+    hostname,
+    pathname,
+  });
+
+  // Trigger a Slack notification endpoint with a link to these new
+  // screenshots.
+  // @todo Add a header auth key.
+  const prefix = `screenshots/${hostname}/${pathname}/${timestamp}/`;
+  await request({
+    method: 'POST',
+    host: 'pmc-wayback-machine.vercel.app',
+    path: '/api/v1/slack/notification-for-capture',
+    body: JSON.stringify({ prefix }),
   });
 
   // @todo Include the screenshot urls in this response?
@@ -76,17 +98,11 @@ export async function captureAndUploadScreenshots ({
  * @param {string} url        URL for the screenshot.
  */
 const processScreenshot = async ({
+  hostname,
   name,
+  pathname,
   screenshot,
-  url,
 }) => {
-  const pathParts = getPathPartsByUrl(url);
-  if ( ! pathParts ) {
-    return false;
-  }
-
-  const { hostname, pathname } = pathParts;
-
   const requestOptions = {
     host: `${S3_BUCKET_NAME}.s3.${AWS_REGION}.amazonaws.com`,
     method: 'PUT',
@@ -125,7 +141,6 @@ async function request(opts) {
       data: opts.body || '',
     });
   } catch (error) {
-    console.log('Error', error);
     return false;
   }
 }

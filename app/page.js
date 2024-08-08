@@ -3,8 +3,9 @@
 import styles from "./page.module.scss";
 import useAppState from './use-app-state';
 import { BsBucket } from "react-icons/bs";
-import { FiHome } from "react-icons/fi";
+import { FiHome, FiPlusCircle, FiRotateCw } from "react-icons/fi";
 import { format } from 'date-fns';
+import { useRef, useState } from 'react';
 import {
   Dialog,
   DialogBackdrop,
@@ -26,6 +27,7 @@ export default function Home() {
     data,
     error,
     isPending,
+    setState,
   } = appState;
 
   // Bucket data is loading.
@@ -42,7 +44,16 @@ export default function Home() {
     <>
       <header className={styles.header}>
         <div className={styles.inner}>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">PMC Screenshot Dashboard</h1>
+          <div className={styles.heading}>
+            <h1 className="text-3xl font-bold tracking-tight text-gray-900">PMC Screenshot Dashboard</h1>
+            <button
+              className="rounded-md bg-indigo-600 p-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              onClick={() => setState('addNewCaptureModalIsOpen', true)}
+            >
+              <FiPlusCircle className="-ml-0.5 h-5 w-5" />
+              <span>Add URL</span>
+            </button>
+          </div>
           <Breadcrumbs {...appState} />
         </div>
       </header>
@@ -51,7 +62,8 @@ export default function Home() {
           <List {...appState} />
         </div>
       </main>
-      <Modal {...appState} />
+      <AssetViewModal {...appState} />
+      <AddNewCaptureModal {...appState} />
     </>
   );
 }
@@ -74,7 +86,7 @@ const Breadcrumbs = ({
               href="#"
             >
               <BsBucket aria-hidden="true" className="h-5 w-5 flex-shrink-0" />
-              <span>s3://pmc-screenshot-dashboard</span>
+              <span>s3://{process.env.NEXT_PUBLIC_BUCKET_NAME}</span>
             </a>
           </div>
         </li>
@@ -200,7 +212,7 @@ const List = ({
  * @param {function} setState        Helper to update state.
  * @param {string}   state.objectUrl Selected object url.
  */
-const Modal = ({
+const AssetViewModal = ({
   setState,
   state: {
     objectUrl,
@@ -233,6 +245,114 @@ const Modal = ({
                 </div>
               </div>
             </div>
+          </DialogPanel>
+        </div>
+      </div>
+    </Dialog>
+  );
+}
+
+const AddNewCaptureModal = ({
+  setState,
+  state: {
+    addNewCaptureModalIsOpen,
+  }
+}) => {
+  const emailInput = useRef(null);
+  const [ isSending, setIsSending ] = useState(false);
+  const [ helpText, setHelpText ] = useState('');
+
+  /**
+   * Handle form submission.
+   *
+   * Grab the URL and hit the GitHub endpoint to trigger a new Checkly test.
+   */
+  const submitForm = async (event) => {
+    event.preventDefault();
+    const url = emailInput?.current?.value ?? '';
+
+    try {
+      new URL(url);
+    } catch(error) {
+      setHelpText('Invalid URL. Try again!');
+      return;
+    }
+
+    setIsSending(true);
+    setHelpText('Processing...')
+    try {
+      const result = await fetch(
+        '/api/v1/github/capture-url-workflow',
+        {
+          method: 'POST',
+          body: JSON.stringify({ url }),
+        }
+      );
+
+      const responseCode = result.status;
+      if (200 !== responseCode ) {
+        setIsSending(false);
+        setHelpText(`Failed to connect to GitHub. Check your API key.` );
+        return;
+      }
+
+      setIsSending(false);
+      setHelpText(`Capture Job Scheduled. I'm not smart enough to let you know once it's finished, but keep refreshing until you see it` );
+    } catch(exception) {
+      setHelpText('Something went wrong. Try again!');
+    }
+  };
+
+  return (
+    <Dialog
+      className={`${styles.submitForm} relative z-10`}
+      onClose={() => setState('addNewCaptureModalIsOpen', false)}
+      open={addNewCaptureModalIsOpen}
+    >
+      <DialogBackdrop
+        transition
+        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+      />
+
+      <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+          <DialogPanel
+            className={`${styles.dialogPanel} relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95`}
+            transition
+          >
+           <DialogTitle className="font-bold">Capture URL</DialogTitle>
+            <form onSubmit={submitForm}>
+              <div className={styles.formEmail}>
+                <label>
+                  <input
+                    className="rounded-md border-0 p-2.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                    ref={emailInput}
+                    type="url"
+                  />
+                </label>
+              </div>
+              <div>
+                <button
+                  className="rounded-md bg-indigo-600 p-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                >
+                  {(true) && (
+                    <>
+                      <FiPlusCircle className="-ml-0.5 h-5 w-5" /> <span>Capture URL</span>
+                    </>
+                  )}
+                  {(false) && (
+                    <>
+                      <FiRotateCw className="-ml-0.5 h-5 w-5" /> <span> Sending...</span>
+                    </>
+                  )}
+                </button>
+              </div>
+            </form>
+            {0 !== helpText?.length && (
+              <div className="text-sm mt-5">
+                {helpText}
+              </div>
+            ) }
           </DialogPanel>
         </div>
       </div>

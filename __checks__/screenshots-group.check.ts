@@ -13,12 +13,11 @@ export const pmcWaybackMachineGroup = new CheckGroup( 'groups-pmc-wayback-machin
   concurrency: 100,
 } );
 
-
 /**
  * Create a "catch-all" check that can be used via CLI to test any URL.
  * @type {[type]}
  */
-new BrowserCheck(`screenshot-generic`, {
+new BrowserCheck('screenshot-generic', {
   name: `Catch-All: Screenshot any URL via CLI`,
   locations: ['us-east-1', 'eu-west-1'],
   group: pmcWaybackMachineGroup,

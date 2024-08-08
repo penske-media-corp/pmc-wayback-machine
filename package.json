@@ -2,12 +2,10 @@
     "name": "pmc-screenshot-dashboard",
     "version": "0.1.0",
     "private": true,
-    "config":
-    {
+    "config": {
         "url": ""
     },
-    "scripts":
-    {
+    "scripts": {
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
@@ -21,9 +19,10 @@
         "qat:checkly:deploy": "checkly deploy",
         "qat:checkly:screenshot-url": "checkly test -e SCREENSHOT_URL=${npm_config_url} --grep \"Catch-All: Screenshot any URL via CLI\""
     },
-    "dependencies":
-    {
+    "dependencies": {
         "@aws-sdk/client-s3": "^3.623.0",
+        "@octokit/core": "^6.1.2",
+        "@slack/web-api": "^7.3.2",
         "date-fns": "^3.6.0",
         "next": "14.2.5",
         "react": "^18",
@@ -31,16 +30,15 @@
         "react-icons": "^5.2.1",
         "sass": "^1.77.8"
     },
-    "devDependencies":
-    {
+    "devDependencies": {
         "@headlessui/react": "^2.1.2",
         "@playwright/test": "^1.45.1",
         "@tanstack/react-query": "^5.51.21",
         "@types/react": "18.3.3",
+        "autoprefixer": "^10.4.20",
         "aws4": "^1.13.0",
         "axios": "^1.7.2",
         "checkly": "^4.7.0",
-        "autoprefixer": "^10.4.20",
         "eslint": "^8",
         "eslint-config-next": "14.2.5",
         "postcss": "^8.4.40",

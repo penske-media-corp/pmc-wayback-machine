@@ -9,6 +9,7 @@ import { useHash } from './use-hash';
  * @type {Object}
  */
 const initialState = {
+  addNewCaptureModalIsOpen: false,
   objectUrl: '',
 };
 
@@ -65,7 +66,7 @@ const useAppState = () => {
    */
   const query = useQuery({
     queryKey: ['bucket-contents', { prefix }],
-    queryFn: async () => await fetch(`/list-objects?prefix=${prefix}`)
+    queryFn: async () => await fetch(`api/v1/s3/list-objects?prefix=${prefix}`)
         .then((response) => response.json()),
   });
 
@@ -90,7 +91,6 @@ const useAppState = () => {
             size: Size,
             path: Key,
             url: `https://${process.env.NEXT_PUBLIC_BUCKET_NAME}.s3.amazonaws.com/${Key}`,
-            // url: `https://pmc-screenshot-dashboard.s3.amazonaws.com/${Key}`,
           })
         ) || [],
     };
