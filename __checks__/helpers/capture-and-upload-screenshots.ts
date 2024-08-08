@@ -76,7 +76,7 @@ export async function captureAndUploadScreenshots ({
   // Trigger a Slack notification endpoint with a link to these new
   // screenshots.
   // @todo Add a header auth key.
-  const prefx = `screenshots/${hostname}/${pathname}/${timestamp}/`;
+  const prefix = `screenshots/${hostname}/${pathname}/${timestamp}/`;
   await request({
     method: 'POST',
     host: 'pmc-wayback-machine.vercel.app',
