@@ -19,7 +19,7 @@ export async function POST(request) {
   try {
     const { prefix = '' } = await request.json();
     const link = `https://${process.env.NEXT_PUBLIC_URL}/#${prefix}`;
-    const message = `<${link}|New Screenshots!>`;
+    const message = `<${link}|New Screenshots! Prefix: ${prefix}>`;
 
     const success = await slackWebApi.chat.postMessage({
       channel: SLACK_CHANNEL_ID,
