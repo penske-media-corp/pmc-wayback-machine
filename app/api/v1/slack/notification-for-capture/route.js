@@ -19,7 +19,7 @@ export async function POST(request) {
   try {
     const prefix = request.nextUrl.searchParams.get('prefix');
     const link = `https://pmc-wayback-machine.vercel.app/#${prefix}`;
-    const message = `<${link}|New Screenshots!%>`;
+    const message = `<${link}|New Screenshots!>`;
 
     const success = await slackWebApi.chat.postMessage({
       channel: SLACK_CHANNEL_ID,
