@@ -17,8 +17,8 @@ export const dynamic = 'force-dynamic';
  */
 export async function POST(request) {
   try {
-    const prefix = request.nextUrl.searchParams.get('prefix');
-    const link = `https://pmc-wayback-machine.vercel.app/#${prefix}`;
+    const { prefix = '' } = await request.json();
+    const link = `https://${NEXT_PUBLIC_URL}/#${prefix}`;
     const message = `<${link}|New Screenshots!>`;
 
     const success = await slackWebApi.chat.postMessage({
