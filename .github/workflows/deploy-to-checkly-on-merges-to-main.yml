@@ -1,7 +1,7 @@
 name: Deploy to Checkly on merges to main
 
 on:
-  workflow_call:
+  workflow_dispatch:
     secrets:
       BITBUCKET_READ_ONLY_SSH_KEY:
         required: false
