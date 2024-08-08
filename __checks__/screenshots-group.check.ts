@@ -22,9 +22,6 @@ new BrowserCheck(`screenshot-generic`, {
   name: `Catch-All: Screenshot any URL via CLI`,
   locations: ['us-east-1', 'eu-west-1'],
   group: pmcWaybackMachineGroup,
-  environmentVariables: [
-    { key: 'SCREENSHOT_URL', value: '' },
-  ],
   code: {
     entrypoint: path.join(process.cwd(), '__checks__', 'screenshots-test.spec.ts'),
   },
