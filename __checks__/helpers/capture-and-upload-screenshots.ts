@@ -75,18 +75,13 @@ export async function captureAndUploadScreenshots ({
 
   // Trigger a Slack notification endpoint with a link to these new
   // screenshots.
+  // @todo Add a header auth key.
   const prefx = `screenshots/${hostname}/${pathname}/${timestamp}/`;
   await request({
     method: 'POST',
-    host: 'pmc-wayback-machine.vercel.app'
+    host: 'pmc-wayback-machine.vercel.app',
     path: '/api/v1/slack/notification-for-capture',
-    headers: {
-      // Some kind of auth token here. We need to validate this is coming from
-      // our Checkly account.
-    },
-    body: {
-      prefix,
-    },
+    body: JSON.stringify({ prefix }),
   });
 
   // @todo Include the screenshot urls in this response?
