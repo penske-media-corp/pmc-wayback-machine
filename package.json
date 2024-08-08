@@ -17,27 +17,27 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.623.0",
-    "@headlessui/react": "^2.1.2",
-    "@playwright/test": "^1.45.1",
-    "@tanstack/react-query": "^5.51.21",
-    "aws4": "^1.13.0",
-    "axios": "^1.7.2",
-    "checkly": "^4.7.0",
     "date-fns": "^3.6.0",
-    "glob": "^11.0.0",
     "next": "14.2.5",
     "react": "^18",
     "react-dom": "^18",
     "react-icons": "^5.2.1",
-    "sass": "^1.77.8",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.5.3"
+    "sass": "^1.77.8"
   },
   "devDependencies": {
+    "@headlessui/react": "^2.1.2",
+    "@playwright/test": "^1.45.1",
+    "@tanstack/react-query": "^5.51.21",
+    "@types/react": "18.3.3",
+    "aws4": "^1.13.0",
+    "axios": "^1.7.2",
+    "checkly": "^4.7.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
     "postcss": "^8.4.40",
-    "tailwindcss": "^3.4.7"
+    "tailwindcss": "^3.4.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.3"
   }
 }
