@@ -14,7 +14,16 @@
     @include layouts.stack();
     @include inner-width();
     padding: 1.25rem 0;
+
+    .heading {
+      @include layouts.cluster( $justify-content: space-between );
+
+      button {
+        @include layouts.cluster();
+      }
+    }
   }
+
 }
 
 .main {
@@ -56,5 +65,29 @@
     background: none;
     border: none;
 
+  }
+}
+
+.submitForm {
+
+  .dialogPanel {
+    max-width: 800px;
+    width: 100%;
+  }
+
+  form {
+    @include layouts.cluster();
+
+    .formEmail {
+      flex-grow: 1;
+
+      input {
+        width: 100%;
+      }
+    }
+
+    button {
+      @include layouts.cluster( $gap: 0.5rem );
+    }
   }
 }

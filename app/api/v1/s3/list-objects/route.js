@@ -1,19 +1,7 @@
-import { S3Client, ListObjectsV2Command } from "@aws-sdk/client-s3";
+import s3Client from '../s3-client';
+import { ListObjectsV2Command } from "@aws-sdk/client-s3";
 
 export const dynamic = 'force-dynamic';
-
-/**
- * S3 client.
- *
- * @type {S3Client}
- */
-const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  },
-});
 
 /**
  * Proxy the S3 request to our server to avoid exposing secrets.
