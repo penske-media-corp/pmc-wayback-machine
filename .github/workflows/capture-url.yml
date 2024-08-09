@@ -35,12 +35,6 @@ jobs:
   checkly-deploy:
     name: Checkly Run and Deploy
     runs-on: ubuntu-latest
-    timeout-minutes: 90
-    # if the check_files step in the check-qat job doesn't fail
-
-    concurrency:
-      group: ${{ github.ref_name || github.run_id }}-checkly-qat
-      cancel-in-progress: true
 
     steps:
       - uses: actions/checkout@v4
