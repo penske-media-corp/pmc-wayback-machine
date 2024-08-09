@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
  * @param {Request} request Request object.
  */
 export async function POST(request) {
-  const url = request.nextUrl.searchParams.get('url');
+  const { url = '' } = await request.json();
   try {
     new URL(url); // Throws an error if not a url.
   } catch (error) {
