@@ -34,6 +34,7 @@ new BrowserCheck('screenshot-generic', {
  * @type {Array}
  */
 const urls = [
+  'https://wwd.com',
   'https://variety.com',
   'https://variety.com/2024/tv/entertainers/snl-marcello-hernandez-dave-chappelle-saturday-night-live-1236096469/',
   'https://variety.com/v/film/',
